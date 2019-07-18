@@ -10,12 +10,17 @@ from ..util.decorator import admin_token_required, token_required
 api = UserDto.api
 _user = UserDto.user
 
+# create a parser for handling Authorization headers
+parser = api.parser()
+parser.add_argument('Authorization', location='headers')
+
 
 @api.route('/')
 @api.response(201, 'User successfully created')
 @api.response(409, 'User already exists. Please Log in')
 @api.expect(_user, validate=True)
 class createUser(Resource):
+    
     def post(self):
         '''Creates a new User'''
         data = request.json
@@ -25,7 +30,9 @@ class createUser(Resource):
 @api.route('/all')
 @api.response(200, 'Success')
 class UserList(Resource):
+
     @api.marshal_list_with(_user, envelope='data')
+    @api.expect(parser)
     @token_required
     @admin_token_required
     def get(self):
@@ -38,6 +45,7 @@ class UserList(Resource):
 @api.response(404, 'User not found')
 class User(Resource):
     @api.marshal_with(_user)
+    @api.expect(parser)
     @token_required
     @admin_token_required
     def get(self, public_id):
@@ -51,6 +59,8 @@ class User(Resource):
 
 @api.route('/test')
 class Test(Resource):
+
+    @api.expect(parser)
     @token_required
     def get(self):
         re = {
