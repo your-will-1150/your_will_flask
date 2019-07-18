@@ -20,7 +20,7 @@ parser.add_argument('Authorization', location='headers')
 @api.response(409, 'User already exists. Please Log in')
 @api.expect(_user, validate=True)
 class createUser(Resource):
-    
+
     def post(self):
         '''Creates a new User'''
         data = request.json
@@ -33,7 +33,6 @@ class UserList(Resource):
 
     @api.marshal_list_with(_user, envelope='data')
     @api.expect(parser)
-    @token_required
     @admin_token_required
     def get(self):
         '''Admin view all registered users'''
@@ -44,9 +43,9 @@ class UserList(Resource):
 @api.param('public_id', 'The User identifier')
 @api.response(404, 'User not found')
 class User(Resource):
+
     @api.marshal_with(_user)
     @api.expect(parser)
-    @token_required
     @admin_token_required
     def get(self, public_id):
         '''Admin user lookup'''
