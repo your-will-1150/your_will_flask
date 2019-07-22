@@ -54,6 +54,20 @@ def save_changes(data):
     db.session.add(data)
     db.session.commit()
 
+def update_user(id, data):
+    user = get_a_user(id)
+    for key, item in data.items():
+        setattr(user, key, item)
+    user.modified_at = datetime.utcnow()
+    db.session.commit()
+    response = {'status' : 'updated user'}
+    return response, 200
+
+def delete_user(id):
+    user = User.query.filter_by(public_id=id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return None, 204
 
 def generate_token(user):
     try:

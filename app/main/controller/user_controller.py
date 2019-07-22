@@ -1,59 +1,55 @@
-from flask import request
+from flask import request, g
 from flask_restplus import Resource
 
-from ..util.dto import UserDto
-from ..service.user_service import save_new_user, get_all_users, get_a_user
+from ..util.dto import UserDto, UserCreateDto, UserDetailDto, UserUpdateDto, UserMe
+from ..service import user_service
 
-from ..util.decorator import admin_token_required, token_required
 
 
 api = UserDto.api
-_user = UserDto.user
+user = UserDto.user
+user_create = UserCreateDto.user
+user_detail = UserDetailDto.user
+user_update = UserUpdateDto.user
+user_me = UserMe.user
 
-# create a parser for handling Authorization headers
 parser = api.parser()
 parser.add_argument('Authorization', location='headers')
 
 
 @api.route('/')
-@api.response(201, 'User successfully created')
-@api.response(409, 'User already exists. Please Log in')
-@api.expect(_user, validate=True)
-class createUser(Resource):
-
+class UserCreate(Resource):
+    @api.response(201, 'User successfully created')
+    @api.doc('create new user')
+    @api.response(409, 'User already exists. Please Log in')
+    @api.expect(user, validate=True)
     def post(self):
         '''Creates a new User'''
         data = request.json
-        return save_new_user(data=data)
+        return user_service.save_new_user(data=data)
 
 
 @api.route('/all')
 @api.response(200, 'Success')
 class UserList(Resource):
-
-    @api.marshal_list_with(_user, envelope='data')
+    @api.doc('get all users')
+    @api.marshal_list_with(user)
     @api.expect(parser)
-    @admin_token_required
+    @Authenticate
     def get(self):
         '''Admin view all registered users'''
-        return get_all_users()
+        return user_service.get_all_users()
 
 
 @api.route('/<public_id>')
-@api.param('public_id', 'The User identifier')
-@api.response(404, 'User not found')
 class User(Resource):
 
-    @api.marshal_with(_user)
-    @api.expect(parser)
-    @admin_token_required
+    @api.response(404, 'user not found')
+    @api.doc('get a user')
+    @api.marshal_with(user_detail)
     def get(self, public_id):
         '''Admin user lookup'''
-        user = get_a_user(public_id)
-        if not user:
-            api.abort(404)
-        else:
-            return user
+        return user_service.get_a_user(public_id)
 
 
 @api.route('/test')
@@ -66,3 +62,36 @@ class Test(Resource):
             'status': 'How did you get here',
             'message': 'LEAVE'
         }
+
+
+@api.route('/me')
+@api.response(401, 'unauthorized')
+@api.expect(parser)
+class UserMe(Resource):
+
+    @api.doc('update users account')
+    @api.expect(user_update)
+    @Authenticate
+    def put(self):
+        data = request.json
+        user_id = g.user.get('owner_id')
+        return user_service.update_user(user_id, data)
+
+    @api.doc('get account associated with token')
+    @api.marshal_with(user_me)
+    @Authenticate
+    def get(self):
+        user_id = g.user.get('owner_id')
+        return user_service.get_a_user(user_id)
+
+
+    @api.doc('delete account')
+    @Authenticate
+    def delete(self):
+        user_id = g.user.get('owner_id)
+        return user_service.delete_user(user_id)
+
+
+@api.route('/by_username/<username>')
+@api.param('username', 'users unique name')
+@api.response(404, 'user note found')
