@@ -1,6 +1,5 @@
 from flask_restplus import Namespace, fields
 
-
 class UserDto:
     api = Namespace('user', description='user related operations')
     user = api.model('user', {
@@ -50,4 +49,41 @@ class UserMe:
         'id' : fields.Integer(description='user Identifier'),
         'registered_on' : fields.DateTime(description='time of registration'),
         'modified_at' : fields.DateTime(description='time of revision')
+    })
+
+class ItemDto:
+    api = Namespace('item', description='items')
+    item = api.model('item_list_item', {
+        'id' : fields.Integer(required=True, description='id of item'),
+        'title' : fields.String(required=True, description='title'),
+        'owner_id' : fields.String(required=True, description='id of owner'),
+        'created_at' : fields.DateTime(required=True, description='when item was created')
+    })
+
+class ItemDetailDto:
+    api = ItemDto.api
+    item = api.model('item_detail', {
+        'id' : fields.Integer(required=True, description='id of item'),
+        'title' : fields.String(required=True, description='title'),
+        'content' : fields.String(required=True, description='content of item'),
+        'price' : fields.Float(required=True, description='price of item'),
+        'owner_id' : fields.String(required=True, description='id of owner'),
+        'created_at' : fields.DateTime(description='when the item was created'),
+        'modified_at' : fields.DateTime(description='last revision of item')
+    })
+
+class ItemCreateDto:
+    api = ItemDto.api
+    item = api.model('item_create', {
+        'title' : fields.String(required=True, description='title of item'),
+        'content' : fields.String(required=True, description='content of item'),
+        'price' : fields.Float(required=True, description='price of item')
+    })
+
+class ItemUpdateDto:
+    api = ItemDto.api
+    item = api.model('item_update', {
+        'title' : fields.String(required=True, description='title of item'),
+        'content' : fields.String(required=True, description='content of note'),
+        'price' : fields.Float(required=True, description='price of item')
     })
