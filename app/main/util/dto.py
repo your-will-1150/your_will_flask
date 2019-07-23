@@ -87,3 +87,41 @@ class ItemUpdateDto:
         'content' : fields.String(required=True, description='content of note'),
         'price' : fields.Float(required=True, description='price of item')
     })
+
+class ReviewDto:
+    api = Namespace('review', description='reviews')
+    review = api.model('review_list_item', {
+        'id' : fields.Integer(required=True, description='id of review'),
+        'title' : fields.String(required=True, description='title'),
+        'content' : fields.String(required=True, description='content of review'),
+        'rating' : fields.Integer(required=True, description='1 - 5 rating'),
+        'created_at' : fields.DateTime(description='when the review was created'),   
+    })
+
+class ReviewDetailDto:
+    api = ReviewDto.api
+    review = api.model('review_detail', {
+        'id' : fields.Integer(required=True, description='id of review'),
+        'title' : fields.String(required=True, description='title'),
+        'content' : fields.String(required=True, description='content of review'),
+        'rating' : fields.Integer(required=True, description='1 - 5 rating'),
+        'created_at' : fields.DateTime(description='when the review was created'),
+        'modified_at' : fields.DateTime(description='last revision of the note')
+    })
+
+class ReviewCreateDto:
+    api = ReviewDto.api
+    review = api.model('review_create', {
+        'title' : fields.String(required=True, description='title of review'),
+        'content' : fields.String(required=True, description='content of review'),
+        'rating' : fileds.Integer(required=True, description='rate 1-5')
+    })
+
+class ReviewUpdateDto:
+    api = ReviewDto.api
+    review = api.model('review_update', {
+        'title' : fields.String(required=True, description='title of review'),
+        'content' : fields.String(required=True, description='give a description'),
+        'rating' : fields.Integer(required=True,
+        description='rate 1-5')
+    })
