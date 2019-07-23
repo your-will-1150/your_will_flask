@@ -13,6 +13,8 @@ item_detail = ItemDetailDto.item
 item_update = ItemUpdateDto.item
 
 
+parser = api.parser()
+parser.add_argument('Authorization', location='headers')
 
 @api.route('/')
 @api.response(404, 'no items found')
@@ -30,6 +32,7 @@ class ItemList(Resource):
     @api.doc('create new item')
     @api.expect(item_create, validate=True)
     @Authenticate
+    @api.expect(parser)
     def post(self):
         data = request.json
         data['owner_id'] = g.user['owner_id']

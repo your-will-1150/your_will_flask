@@ -11,9 +11,9 @@ def create_item(data):
 
     new_item = Item(
         owner_id=data['owner_id'],
-        item_title=data['item_title'],
-        item_description=data['item_description'],
-        item_price=data['item_price'],
+        title=data['title'],
+        content=data['content'],
+        price=data['price'],
         created_at=datetime.utcnow(),
         modified_at=datetime.utcnow()
     )
