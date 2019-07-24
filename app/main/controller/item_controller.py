@@ -57,11 +57,12 @@ class Item(Resource):
     @Authenticate
     def put(self, item_id):
         data = request.json
-        item_id = g.user.get('owner_id')
+        owner_id = g.user.get('owner_id')
         item = item_service.get_item_by_id(item_id)
+        print(item)
         if not item:
             api.abort(404)
-        if item_id != item.owner_id:
+        if owner_id != item.owner_id:
             api.abort(401)
         return item_service.update_item(item_id, data)
     
