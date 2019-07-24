@@ -56,11 +56,11 @@ class Review(Resource):
     @Authenticate
     def put(self, review_id):
         data = request.json
-        review_id = g.user.get('owner_id')
+        owner_id = g.user.get('owner_id')
         review = review_service.get_review_by_id(review_id)
         if not review:
             api.abort(404)
-        if review_id != review.owner_id:
+        if owner_id != review.owner_id:
             api.abort(401)
         return review_service.update_review(review_id, data)
     
