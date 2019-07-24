@@ -13,7 +13,7 @@ def Authenticate(f):
     def decorated(*args, **kwargs):
 
         data, status = Auth.get_logged_in_user(request)
-        print(data)
+        
 
         token = data.get('data')
 

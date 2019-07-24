@@ -41,10 +41,10 @@ def get_item_by_id(id):
 
 def update_item(id, data):
     item2 = get_item_by_id(id)
-    if item:
+    if item2:
         for key, item in data.items():
             setattr(item2, key, item)
-        note.modified_at = datetime.utcnow()
+        item2.modified_at = datetime.utcnow()
         db.session.commit()
         return Item.query.get(id), 200
     else:

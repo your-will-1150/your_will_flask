@@ -25,7 +25,7 @@ class ItemList(Resource):
     def get(self):
         items = item_service.get_all_items()
         if len(items) == 0:
-            return {'status' : 'not items found'}, 404
+            return {'status' : 'no items found'}, 404
         return marshal(items, item)
     
     @api.response(201, 'Item Created')
@@ -57,11 +57,11 @@ class Item(Resource):
     @Authenticate
     def put(self, item_id):
         data = request.json
-        user_id = g.user.get('owner_id')
+        item_id = g.user.get('owner_id')
         item = item_service.get_item_by_id(item_id)
         if not item:
             api.abort(404)
-        if user_id != item.owner_id:
+        if item_id != item.owner_id:
             api.abort(401)
         return item_service.update_item(item_id, data)
     

@@ -114,7 +114,7 @@ class ReviewCreateDto:
     review = api.model('review_create', {
         'title' : fields.String(required=True, description='title of review'),
         'content' : fields.String(required=True, description='content of review'),
-        'rating' : fileds.Integer(required=True, description='rate 1-5')
+        'rating' : fields.Integer(required=True, description='rate 1-5')
     })
 
 class ReviewUpdateDto:
