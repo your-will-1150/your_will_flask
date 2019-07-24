@@ -1,7 +1,7 @@
 import datetime
 import jwt
 
-from .user import user
+from .user import User
 from ..import db, flask_bcrypt
 
 class Review(db.Model):
