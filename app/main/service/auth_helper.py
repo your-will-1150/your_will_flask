@@ -43,7 +43,7 @@ class Auth:
                 return save_token(token=data)
             else:
                 response_object = {
-                    'stauts' : 'fail',
+                    'status' : 'fail',
                     'message' : resp
                 }
                 return response_object, 401
@@ -83,6 +83,7 @@ class Auth:
                 'message': 'Provide a valid auth token'
             }
             return response_object, 401
+    
     
     # @staticmethod
     # def delete_user(data, auth_token):

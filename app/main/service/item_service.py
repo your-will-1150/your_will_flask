@@ -14,6 +14,7 @@ def create_item(data):
         title=data['title'],
         content=data['content'],
         price=data['price'],
+        listed=data['listed'],
         created_at=datetime.utcnow(),
         modified_at=datetime.utcnow()
     )
@@ -59,6 +60,16 @@ def delete_item(id):
         return {'status' : 'no content'}, 204
     else:
         return {'status' : 'item not found'}, 404
+
+# def change_listing_status(data):
+#     listed = data['listed']
+#     if listed_data:
+#         listed = False
+#     listed = True
+
+#     return listed
+# based off user inpiut, listed will change to either true or false
+#    
 
 def save_changes(data):
     db.session.add(data)
