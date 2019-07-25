@@ -67,6 +67,7 @@ class ItemDetailDto:
         'title' : fields.String(required=True, description='title'),
         'content' : fields.String(required=True, description='content of item'),
         'price' : fields.Float(required=True, description='price of item'),
+        'listed' : fields.Boolean(required=True, description='status of listing'),
         'owner_id' : fields.String(required=True, description='id of owner'),
         'created_at' : fields.DateTime(description='when the item was created'),
         'modified_at' : fields.DateTime(description='last revision of item')
@@ -77,7 +78,8 @@ class ItemCreateDto:
     item = api.model('item_create', {
         'title' : fields.String(required=True, description='title of item'),
         'content' : fields.String(required=True, description='content of item'),
-        'price' : fields.Float(required=True, description='price of item')
+        'price' : fields.Float(required=True, description='price of item'),
+        'listed' : fields.Boolean(required=True, description='do you want this item listed?')
     })
 
 class ItemUpdateDto:
@@ -85,7 +87,8 @@ class ItemUpdateDto:
     item = api.model('item_update', {
         'title' : fields.String(required=True, description='title of item'),
         'content' : fields.String(required=True, description='content of note'),
-        'price' : fields.Float(required=True, description='price of item')
+        'price' : fields.Float(required=True, description='price of item'),
+        'listed' : fields.Boolean(required=True, description='status of listing')
     })
 
 class ReviewDto:
