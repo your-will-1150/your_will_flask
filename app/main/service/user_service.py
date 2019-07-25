@@ -2,10 +2,19 @@ import uuid
 from datetime import datetime
 from .. import db
 from ..model.user import User
+import re
+
 
 
 def create_user(data):
     user = User.query.filter_by(email=data['email']).first()
+
+    if not _check_password_requirements(data.get('password')):
+        return {
+            'status' : 'fail',
+            'message' : 'Weak password, must include an Uppercase, lowercase, one or more of @$!%*#?&, and be 6-20 letters long'
+        }
+
     if not user:
         new_user = User(
             public_id=uuid.uuid4(),
@@ -14,7 +23,7 @@ def create_user(data):
             password=data['password'],
             registered_on=datetime.utcnow(),
         )
-
+        
         save_changes(new_user)
         response_object = {
             'status': 'success',
@@ -28,6 +37,13 @@ def create_user(data):
         }
         return response_object, 409
 
+def _check_password_requirements(password):
+    pattern = re.compile('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$')
+    match = re.search(pattern, password)
+
+    if match:
+        return True
+    
 
 def get_all_users():
     return User.query.all()
