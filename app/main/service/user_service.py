@@ -1,33 +1,29 @@
 import uuid
-import datetime
-
+from datetime import datetime
 from .. import db
 from ..model.user import User
+import re
 
 
-def save_new_user(data):
-    email = User.query.filter_by(email=data['email']).first()
-    username = User.query.filter_by(username=data['username']).first()
-    if not email and not username:
-        if data['admin']:
-            new_user = User(
-                public_id=(str(uuid.uuid4())),
-                email=data['email'],
-                username=data['username'],
-                password=data['password'],
-                registered_on=datetime.datetime.utcnow(),
-                admin=data['admin']
-            )
-        else:
-            new_user = User(
-                public_id=(str(uuid.uuid4())),
-                email=data['email'],
-                username=data['username'],
-                password=data['password'],
-                registered_on=datetime.datetime.utcnow(),
-                admin=data['admin']
-            )
 
+def create_user(data):
+    user = User.query.filter_by(email=data['email']).first()
+
+    if not _check_password_requirements(data.get('password')):
+        return {
+            'status' : 'fail',
+            'message' : 'Weak password, must include an Uppercase, lowercase, one or more of @$!%*#?&, and be 6-20 letters long'
+        }
+
+    if not user:
+        new_user = User(
+            public_id=uuid.uuid4(),
+            email=data['email'],
+            username=data['username'],
+            password=data['password'],
+            registered_on=datetime.utcnow(),
+        )
+        
         save_changes(new_user)
         response_object = {
             'status': 'success',
@@ -41,13 +37,23 @@ def save_new_user(data):
         }
         return response_object, 409
 
+def _check_password_requirements(password):
+    pattern = re.compile('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$')
+    match = re.search(pattern, password)
+
+    if match:
+        return True
+    
 
 def get_all_users():
     return User.query.all()
 
 
-def get_a_user(public_id):
-    return User.query.filter_by(public_id=public_id).first()
+def get_a_user(id):
+    return User.query.filter_by(id=id).first()
+
+def get_user_by_username(username):
+    return User.query.filter_by(username=username).first()
 
 
 def save_changes(data):
@@ -64,8 +70,9 @@ def update_user(id, data):
     return response, 200
 
 def delete_user(id):
-    user = User.query.filter_by(public_id=id).first()
-    db.session.delete(user)
+    user2 = get_a_user(id)
+    # user = User.query.filter_by(public_id=id).first()
+    db.session.delete(user2)
     db.session.commit()
     return None, 204
 
