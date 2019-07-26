@@ -27,6 +27,9 @@ def create_review(data):
     return response_object
 
 def get_all_reviews():
+    return Review.query.all()
+
+def get_all_reviews_by_id():
     return Review.query.filter_by(owner_id=g.user.get('owner_id')).all()
 
 def get_review_by_id(id):

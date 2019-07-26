@@ -21,13 +21,12 @@ parser.add_argument('Authorization', location='headers')
 class ItemList(Resource):
 
     @api.doc('List of items')
-    @Authenticate
     def get(self):
         items = item_service.get_all_items()
         if len(items) == 0:
             return {'status' : 'no items found'}, 404
         return marshal(items, item)
-    
+
     @api.response(201, 'Item Created')
     @api.doc('create new item')
     @api.expect(item_create, validate=True)
@@ -43,7 +42,6 @@ class ItemList(Resource):
 @api.response(404, 'item not found')
 @api.response(401, 'owner_id mismatch')
 class Item(Resource):
-
     @api.doc('get item by ID')
     @api.marshal_with(item_detail)
     @Authenticate
