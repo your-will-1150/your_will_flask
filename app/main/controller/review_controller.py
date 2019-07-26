@@ -21,7 +21,6 @@ parser.add_argument('Authorization', location='headers')
 class ReviewList(Resource):
 
     @api.doc('List of Reviews')
-    @Authenticate
     def get(self):
         reviews = review_service.get_all_reviews()
         if len(reviews) == 0:

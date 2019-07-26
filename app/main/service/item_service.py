@@ -30,6 +30,9 @@ def create_item(data):
 
 
 def get_all_items():
+    return Item.query.all()
+
+def get_all_items_by_id():
     return Item.query.filter_by(owner_id=g.user.get('owner_id')).all()
 
 def get_item_by_id(id):
