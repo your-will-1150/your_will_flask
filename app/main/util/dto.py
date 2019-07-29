@@ -59,7 +59,18 @@ class ItemDto:
         'owner_id' : fields.String(required=True, description='id of owner'),
         'created_at' : fields.DateTime(required=True, description='when item was created'),
 	'gender' : fields.String(required=True, description='gender of clothing'),
-	'type' : fields.String(required=True, description='top or bottom')
+	'category' : fields.String(required=True, description='top or bottom')
+    })
+
+class ItemSpecificCat:
+    api = ItemDto.api
+    item = api.model('item_by_cat', {
+        'title' : fields.String(required=True, description='title of item'),
+        'content' : fields.String(required=True, description='content of item'),
+        'price' : fields.Float(required=True, description='price of item'),
+        'listed' : fields.Boolean(required=True, description='do you want this item listed?'),
+	    'gender' : fields.String(required=True, descriptio='gender'),
+	    'category' : fields.String(required=True, description='top or bottom')
     })
 
 class ItemDetailDto:
@@ -71,7 +82,7 @@ class ItemDetailDto:
         'price' : fields.Float(required=True, description='price of item'),
         'listed' : fields.Boolean(required=True, description='status of listing'),
         'gender' : fields.String(required=True, description='gender'),
-	'type' : fields.String(required=True, description='top or bottom'),	
+	'category' : fields.String(required=True, description='top or bottom'),	
 	'owner_id' : fields.String(required=True, description='id of owner'),
         'created_at' : fields.DateTime(description='when the item was created'),
         'modified_at' : fields.DateTime(description='last revision of item')
@@ -84,8 +95,8 @@ class ItemCreateDto:
         'content' : fields.String(required=True, description='content of item'),
         'price' : fields.Float(required=True, description='price of item'),
         'listed' : fields.Boolean(required=True, description='do you want this item listed?'),
-	'gender' : fields.String(required=True, descriptio='gender'),
-	'type' : fields.String(required=True, description='top or bottom')
+	    'gender' : fields.String(required=True, descriptio='gender'),
+	    'category' : fields.String(required=True, description='top or bottom')
     })
 
 class ItemUpdateDto:
@@ -94,9 +105,9 @@ class ItemUpdateDto:
         'title' : fields.String(required=True, description='title of item'),
         'content' : fields.String(required=True, description='content of note'),
         'price' : fields.Float(required=True, description='price of item'),
-        'listed' : fields.Boolean(required=True, description='status of listing')
+        'listed' : fields.Boolean(required=True, description='status of listing'),
 	'gender' : fields.String(required=True, description='gender'),
-	'type' : fields.String(required=True, description='top or bottom')
+	'category' : fields.String(required=True, description='top or bottom')
     })
 
 class ReviewDto:

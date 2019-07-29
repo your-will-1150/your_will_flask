@@ -5,6 +5,7 @@ from datetime import datetime
 from .. import db
 
 from ..model.item import Item
+from ..service.user_service import get_a_user
 
 
 def create_item(data):
@@ -15,6 +16,8 @@ def create_item(data):
         content=data['content'],
         price=data['price'],
         listed=data['listed'],
+        gender=data['gender'],
+        category=data['category'],
         created_at=datetime.utcnow(),
         modified_at=datetime.utcnow()
     )
@@ -28,15 +31,23 @@ def create_item(data):
 
     return response_object
 
+def get_item_by_category(category):
+    item = Item.query.filter_by(category=category).first()
+    return item
+
+def get_item_by_gender(gender):
+    item = Item.query.filter_by(gender=gender).first()
+    return item
 
 def get_all_items():
     return Item.query.all()
 
-def get_all_items_by_id():
-    return Item.query.filter_by(owner_id=g.user.get('owner_id')).all()
+def get_all_items_by_user():
+    return Item.query.filter_by(owner_id=owner_id).all()
+
 
 def get_item_by_id(id):
-    item = Item.query.filter_by(id=id, owner_id=g.user.get('owner_id')).first()
+    item = Item.query.filter_by(id=id).first()
 
     if item:
         return item
