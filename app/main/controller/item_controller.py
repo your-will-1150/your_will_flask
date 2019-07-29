@@ -2,7 +2,7 @@ from flask import request, g
 from flask_restplus import Resource
 from flask_restplus.marshalling import marshal
 
-from ..util.dto import ItemCreateDto, ItemDto, ItemDetailDto, ItemUpdateDto
+from ..util.dto import ItemCreateDto, ItemDto, ItemDetailDto, ItemUpdateDto, ItemSpecificCat
 from ..service import item_service
 from ..util.decorator import Authenticate
 
@@ -11,6 +11,7 @@ item = ItemDto.item
 item_create = ItemCreateDto.item
 item_detail = ItemDetailDto.item
 item_update = ItemUpdateDto.item
+item_spec_cat = ItemSpecificCat
 
 
 parser = api.parser()
@@ -36,6 +37,16 @@ class ItemList(Resource):
         data = request.json
         data['owner_id'] = g.user['owner_id']
         return item_service.create_item(data)
+
+@api.route('/specific_cat')
+@api.param('category')
+@api.respnse(404, 'no valid products')
+class ByCategory(Resource):
+    @api.doc('Item by Category')
+
+
+
+
 
 @api.route('/<item_id>')
 @api.param('item_id', 'items unique id')
