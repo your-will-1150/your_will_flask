@@ -40,9 +40,9 @@ class ItemList(Resource):
 
 @api.route('/specific_cat')
 @api.param('category')
-@api.respnse(404, 'no valid products')
-class ByCategory(Resource):
-    @api.doc('Item by Category')
+@api.response(404, 'no valid products')
+# class ByCategory(Resource):
+#     @api.doc('Item by Category')
 
 
 

@@ -5,11 +5,14 @@ from datetime import datetime
 from .. import db
 
 from ..model.review import Review
+from ..model.item import Item
+from ..model.user import User
 
 def create_review(data):
 
     new_review = Review(
-        owner_id=data['owner_id'],
+        owner_id=User.public_id,
+        product_id=Item.id,
         title=data['title'],
         content=data['content'],
         rating=data['rating'],
@@ -29,8 +32,12 @@ def create_review(data):
 def get_all_reviews():
     return Review.query.all()
 
-def get_all_reviews_by_id():
-    return Review.query.filter_by(owner_id=owner_id).all()
+def get_all_reviews_by_poster(owner_id):
+    return Review.query.filter_by(id=owner_id).all()
+
+#change
+def get_review_from_product(product_id):
+    return Review.query.filter_by(id=product_id).all()
 
 def get_review_by_id(id):
     review = Review.query.filter_by(id=id).first()
