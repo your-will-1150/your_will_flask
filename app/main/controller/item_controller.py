@@ -2,16 +2,18 @@ from flask import request, g
 from flask_restplus import Resource
 from flask_restplus.marshalling import marshal
 
-from ..util.dto import ItemCreateDto, ItemDto, ItemDetailDto, ItemUpdateDto, ItemSpecificCat
+from ..util.dto import ItemCreateDto, ItemDto, ItemDetailDto, ItemUpdateDto, ItemSpecificCat, UserDto
 from ..service import item_service
 from ..util.decorator import Authenticate
 
+
+
 api = ItemDto.api
 item = ItemDto.item
+user = UserDto.user
 item_create = ItemCreateDto.item
 item_detail = ItemDetailDto.item
 item_update = ItemUpdateDto.item
-item_spec_cat = ItemSpecificCat
 
 
 parser = api.parser()
@@ -38,11 +40,11 @@ class ItemList(Resource):
         data['owner_id'] = g.user['owner_id']
         return item_service.create_item(data)
 
-@api.route('/specific_cat')
-@api.param('category')
-@api.response(404, 'no valid products')
-# class ByCategory(Resource):
-#     @api.doc('Item by Category')
+# @api.route('/specific_cat')
+# @api.param('category')
+# @api.response(404, 'no valid products')
+# # class ByCategory(Resource):
+# #     @api.doc('Item by Category')
 
 
 
@@ -77,10 +79,10 @@ class Item(Resource):
     
     @api.doc('delete item by id')
     @Authenticate
-    def delete(self, item_id):
-        if g.user.get('owner_id') != item_service.get_item_by_id(item_id).owner_id:
-            api.abort(401)
-        
-        return item_service.delete_item(item_id)
+    def delete(self, item_id, owner_id):
+        if item.owner_id == user[id]:
+            return item_service.delete_item(int(item_id))
+        else:
+            'nuh uh'
        
     

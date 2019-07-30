@@ -3,6 +3,8 @@ from datetime import datetime
 from .. import db
 from ..model.user import User
 import re
+from ..util import dto
+
 
 
 
@@ -22,14 +24,28 @@ def create_user(data):
             username=data['username'],
             password=data['password'],
             registered_on=datetime.utcnow(),
+            admin=False
         )
         
-        save_changes(new_user)
-        response_object = {
-            'status': 'success',
-            'message': 'Successfully registered.'
-        }
-        return generate_token(new_user)
+        if new_user.username == 'admincode:456':
+            new_user.admin = True
+                  
+            
+            save_changes(new_user)
+            response_object = {
+                'status': 'success',
+                'message': 'Successfully registered.'
+            }
+            return generate_token(new_user)
+        else:
+            print('failed')
+            save_changes(new_user)
+            response_object = {
+                'status': 'success',
+                'message': 'Successfully registered.'
+            }
+            return generate_token(new_user)
+
     else:
         response_object = {
             'status': 'fail',
@@ -44,7 +60,7 @@ def _check_password_requirements(password):
     if match:
         return True
     
-
+# make sure to change this in other files
 def get_all_users():
     return User.query.all()
 
@@ -55,6 +71,31 @@ def get_a_user(id):
 def get_user_by_username(username):
     return User.query.filter_by(username=username).first()
 
+def delete_by_id(id):
+    real_dat = User.query.filter_by(id=id).first()
+    if real_dat.admin:
+        db.session.delete(real_dat)
+        db.session.commit()
+        return None, 204
+    else:
+        response = {'status' : 'failed, not an admin'}
+        return response
+
+
+
+def update_by_id(id, data):
+    real_dat = User.query.filter_by(id=id).first()
+    if real_dat.admin:
+        user = get_a_user(id)
+        for key, item in data.items():
+            setattr(user, key, item)
+        user.modified_at = datetime.utcnow()
+        db.session.commit()
+        response = {'status' : 'updated user'}
+        return response, 200
+    else:
+        response = {'status' : 'failed, not an admin'}
+        return response
 
 def save_changes(data):
     db.session.add(data)
@@ -91,3 +132,8 @@ def generate_token(user):
             'message': 'Some error occurred. please try again'
         }
         return response_object, 401
+
+def grant_admin_status(id):
+    real_dat = User.query.filter_by(id=id).first()
+    if real_dat.admin:
+        

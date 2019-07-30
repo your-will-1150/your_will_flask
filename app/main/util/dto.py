@@ -15,7 +15,7 @@ class AuthDto:
     api = Namespace('auth', description='authentication related operations')
     user_auth = api.model('auth_details', {
         'email': fields.String(required=True, description='The email address'),
-        'password': fields.String(required=True, description='The user password')
+        'password': fields.String(default=False, required=False, description='The user password')
     })
 
 class UserDetailDto:
@@ -34,12 +34,16 @@ class UserCreateDto:
         'password' : fields.String(required=True, description='user password'),
         'confirm_password' : fields.String(required=True, 
         description='users confirmation of password'),
+        'admin' : fields.Boolean(default=False, required=False)
     })
 
 class UserUpdateDto:
     user = UserDto.api.model('user_updated', {
         'email' : fields.String(required=True, description='user email address'),
         'username' : fields.String(required=True, description='user username'),
+        'password' : fields.String(required=True, description='user password'),
+        'confirm_password' : fields.String(required=True, 
+        description='users confirmation of password')
     })
 
 class UserMe:
