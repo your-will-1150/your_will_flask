@@ -1,5 +1,6 @@
 from flask import request, g
 from flask_restplus import Resource
+from flask_restplus.marshalling import marshal
 
 from ..util.dto import UserDto, UserCreateDto, UserDetailDto, UserUpdateDto, UserMe
 from ..service import user_service
@@ -90,6 +91,26 @@ class UserMe(Resource):
     def delete(self):
         user_id = g.user.get('owner_id')
         return user_service.delete_user(user_id)
+
+
+
+#admin routes
+@api.route('/<user_id>')
+class Admin_Delete(Resource):
+    @api.doc('delete by user id')
+    @Authenticate
+    def delete(self, user_id):
+        return user_service.delete_user(int(user_id))
+    
+@api.route('/all_users')    
+class GetAllUsers(Resource):
+    def get(self):
+        users = user_service.get_all_users()
+        if len(users) == 0:
+            return {'status' : 'no items found'}, 404
+        return marshal(users, user)
+
+
 
 
 # @api.route('/by_username/<username>')
