@@ -23,13 +23,27 @@ def create_user(data):
             password=data['password'],
             registered_on=datetime.utcnow(),
         )
+        print(new_user.id, 'test1')
+        print(new_user, 'test2')
         
-        save_changes(new_user)
-        response_object = {
-            'status': 'success',
-            'message': 'Successfully registered.'
-        }
-        return generate_token(new_user)
+        if new_user.id == '1':
+            new_user.admin == True
+            print(new_user.admin)      
+            
+            save_changes(new_user)
+            response_object = {
+                'status': 'success',
+                'message': 'Successfully registered.'
+            }
+            return generate_token(new_user)
+        else:
+            save_changes(new_user)
+            response_object = {
+                'status': 'success',
+                'message': 'Successfully registered.'
+            }
+            return generate_token(new_user)
+
     else:
         response_object = {
             'status': 'fail',
@@ -44,7 +58,7 @@ def _check_password_requirements(password):
     if match:
         return True
     
-
+# make sure to change this in other files
 def get_all_users():
     return User.query.all()
 

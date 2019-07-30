@@ -42,7 +42,7 @@ def get_item_by_gender(gender):
 def get_all_items():
     return Item.query.all()
 
-def get_all_items_by_user(ownder_id):
+def get_all_items_by_user(owner_id):
     return Item.query.filter_by(id=owner_id).all()
 
 
