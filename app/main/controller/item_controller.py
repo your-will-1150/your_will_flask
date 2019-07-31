@@ -80,7 +80,7 @@ class Item(Resource):
     @api.doc('delete item by id')
     @Authenticate
     def delete(self, item_id):
-        if item.owner_id == g.user.get('owner_id'):
+        if item['owner_id'] == g.user.get('user_id'):
             return item_service.delete_item(int(item_id))
         else:
             return 'Not your item to delete'
@@ -93,7 +93,8 @@ class Item(Resource):
 class Admin_func(Resource):
     def delete(self, item_id):
         data = request.json
-        return item_service.delete_item_admin(item_id, data['owner_id'])
+        print(data)
+        return item_service.delete_item_admin(item_id, data['id'])
 
     @api.doc('admin update item')
     @api.expect(item_update, validate=True)
