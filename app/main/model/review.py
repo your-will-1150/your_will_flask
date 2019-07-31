@@ -11,6 +11,7 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
+    username = db.Column(db.String(128), db.ForeignKey('users.username'), nullable=False)
     title = db.Column(db.String(32), nullable=False)
     content = db.Column(db.String(128), nullable=False)
     rating = db.Column(db.Integer, nullable=False)

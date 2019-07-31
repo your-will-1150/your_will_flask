@@ -54,30 +54,10 @@ class UserMe(Resource):
     @Authenticate
     def delete(self):
         user_id = g.user.get('owner_id')
+        print(user_id)
         return user_service.delete_user(user_id)
 
-#admin routes
-@api.route('/admin/<user_id>')
-class Admin_Delete(Resource):
-    @api.doc('delete by user id')
-    @Authenticate
-    def delete(self, user_id):
-        return user_service.delete_by_id(int(user_id))
-    
-@api.route('/admin/all_users')    
-class GetAllUsers(Resource):
-    def get(self):
-        users = user_service.get_all_users()
-        if len(users) == 0:
-            return {'status' : 'no items found'}, 404
-        return marshal(users, user)
 
-@api.route('/admin/<user_id>')
-class AdminUpdate(Resource):
-    @api.doc('update by id')
-    def put(self, user_id):
-        data = request.json
-        return user_service.update_by_id(user_id, data)
 
 
 
