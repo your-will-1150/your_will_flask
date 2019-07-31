@@ -27,7 +27,7 @@ def create_user(data):
             admin=False
         )
         
-        if new_user.username == 'admincode:456':
+        if new_user.username == 'username':
             new_user.admin = True
                   
             
@@ -71,10 +71,12 @@ def get_a_user(id):
 def get_user_by_username(username):
     return User.query.filter_by(username=username).first()
 
-def delete_by_id(id):
+#admin function
+def delete_by_id(id, public_id):
     real_dat = User.query.filter_by(id=id).first()
+    user_del = User.query.filter_by(public_id=public_id).first()
     if real_dat.admin:
-        db.session.delete(real_dat)
+        db.session.delete(user_del)
         db.session.commit()
         return None, 204
     else:
@@ -82,14 +84,19 @@ def delete_by_id(id):
         return response
 
 
-
-def update_by_id(id, data):
+#admin function
+def update_by_id(id, data, public_id):
     real_dat = User.query.filter_by(id=id).first()
     if real_dat.admin:
-        user = get_a_user(id)
+        user = get_a_user(public_id)
         for key, item in data.items():
             setattr(user, key, item)
         user.modified_at = datetime.utcnow()
+        if not _check_password_requirements(data.get('password')):
+            return {
+                'status' : 'fail',
+                'message' : 'Weak password, must include an Uppercase, lowercase, one or more of @$!%*#?&, and be 6-20 letters long'
+            }
         db.session.commit()
         response = {'status' : 'updated user'}
         return response, 200
@@ -106,6 +113,11 @@ def update_user(id, data):
     for key, item in data.items():
         setattr(user, key, item)
     user.modified_at = datetime.utcnow()
+    if not _check_password_requirements(data.get('password')):
+        return {
+            'status' : 'fail',
+            'message' : 'Weak password, must include an Uppercase, lowercase, one or more of @$!%*#?&, and be 6-20 letters long'
+        }
     db.session.commit()
     response = {'status' : 'updated user'}
     return response, 200
@@ -136,4 +148,5 @@ def generate_token(user):
 def grant_admin_status(id):
     real_dat = User.query.filter_by(id=id).first()
     if real_dat.admin:
+        pass
         

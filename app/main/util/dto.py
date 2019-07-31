@@ -121,7 +121,8 @@ class ReviewDto:
         'title' : fields.String(required=True, description='title'),
         'content' : fields.String(required=True, description='content of review'),
         'rating' : fields.Integer(required=True, description='1 - 5 rating'),
-        'created_at' : fields.DateTime(description='when the review was created'),   
+        'created_at' : fields.DateTime(description='when the review was created'), 
+        'username' : fields.String(required=True, description='username of who created review')  
     })
 
 class ReviewDetailDto:
@@ -132,7 +133,8 @@ class ReviewDetailDto:
         'content' : fields.String(required=True, description='content of review'),
         'rating' : fields.Integer(required=True, description='1 - 5 rating'),
         'created_at' : fields.DateTime(description='when the review was created'),
-        'modified_at' : fields.DateTime(description='last revision of the note')
+        'modified_at' : fields.DateTime(description='last revision of the note'),
+        'username' : fields.String(required=True, description='username of who created review')
     })
 
 class ReviewCreateDto:

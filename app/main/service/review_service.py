@@ -68,6 +68,34 @@ def delete_review(id):
     else:
         return {'status' : 'item not found'}, 404
 
+def admin_delete_review(id, data, owner_id):
+    review = get_review_by_id(id)
+    real_dat = User.query.filter_by(owner_id=owner_id).first()
+    if real_dat.admin:
+        if item:
+            db.session.delete(item)
+            db.session.commit()
+            return {'status' : 'no content'}, 204
+        else:
+            return {'status' : 'item not found'}, 404
+    else:
+        return {'status' : 'Error: Not an Admin'} 
+
+def admin_update_review(id, data, owner_id):
+    review = get_review_by_id(id)
+    real_dat = User.query.filter_by(owner_id=owner_id).first()
+    if real_dat.admin:
+        if review:
+            for key, item in data.items():
+                setattr(review, key, item)
+            review.modified_at = datetome.utcnow()
+            db.session.commit()
+            return Review.query.get(id), 200
+        else:
+            return {'status' : 'review not found'}, 404
+    else:
+        response = {'status' : 'Error: Not an Admin'}
+
 def save_changes(data):
     db.session.add(data)
     db.session.commit()

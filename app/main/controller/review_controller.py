@@ -70,3 +70,17 @@ class Review(Resource):
             api.abort(401)
         
         return review_service.delete_review(review_id)
+
+@api.route('/admin/<review_id>')
+@api.param('review_id', "review's unique ID")
+class AdminFunc(Resource):
+    def delete(self, review_id):
+        data = request.json
+        return review_service.admin_delete_review(review_id, data['owner_id'])
+
+    def put(self, review_id):
+        data = request.json
+        review = review_service.get_review_by_id(review_id)
+        if not review:
+            api.abort(404)
+        return review_service.admin_update_review(review_id, data, data['owner_id'])
