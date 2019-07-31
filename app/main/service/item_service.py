@@ -75,10 +75,12 @@ def delete_item(id):
     else:
         return {'status' : 'item not found'}, 404
 
-def delete_item_admin(id, owner_id):
-    real_dat = User.query.filter_by(owner_id=owner_id).first()
+def delete_item_admin(id, data):
+    real_dat = User.query.filter_by(id=data).first()
+    print(real_dat, 'test1')
     item = get_item_by_id(id)
-    if real_dat.admin:
+    print(item, 'test2')
+    if real_dat['admin']:
         if item:
             db.session.delete(item)
             db.session.commit()
