@@ -63,7 +63,8 @@ class ItemDto:
         'owner_id' : fields.String(required=True, description='id of owner'),
         'created_at' : fields.DateTime(required=True, description='when item was created'),
 	'gender' : fields.String(required=True, description='gender of clothing'),
-	'category' : fields.String(required=True, description='top or bottom')
+	'category' : fields.String(required=True, description='top or bottom'),
+    'listed' : fields.Boolean(required=True, description='do you want this item listed?')
     })
 
 class ItemSpecificCat:
