@@ -11,8 +11,8 @@ from ..model.user import User
 def create_review(data):
 
     new_review = Review(
-        owner_id=User.public_id,
-        product_id=Item.id,
+        owner_id=data['owner_id'],
+        product_id=data['product_id'],
         title=data['title'],
         content=data['content'],
         rating=data['rating'],
@@ -68,9 +68,10 @@ def delete_review(id):
     else:
         return {'status' : 'item not found'}, 404
 
-def admin_delete_review(id, data, owner_id):
+def admin_delete_review(id, data):
     review = get_review_by_id(id)
-    real_dat = User.query.filter_by(owner_id=owner_id).first()
+    real_dat = User.query.filter_by(id=data).first()
+    print(real_dat)
     if real_dat.admin:
         if item:
             db.session.delete(item)
