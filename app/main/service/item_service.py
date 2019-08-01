@@ -77,10 +77,8 @@ def delete_item(id):
 
 def delete_item_admin(id, data):
     real_dat = User.query.filter_by(id=data).first()
-    print(real_dat, 'test1')
     item = get_item_by_id(id)
-    print(item, 'test2')
-    if real_dat['admin']:
+    if real_dat.admin:
         if item:
             db.session.delete(item)
             db.session.commit()
@@ -90,9 +88,10 @@ def delete_item_admin(id, data):
     else:
         return {'status' : 'Error: Not an Admin'}
 
-def update_item_admin(id, data, owner_id):
+def update_item_admin(id, data):
     item2 = get_item_by_id(id)
-    real_dat = User.query.filter_by(owner_id=owner_id).first()
+    real_dat = User.query.filter_by(id=data['owner_id']).first()
+    print(real_dat.admin, 'lolllll')
     if real_dat.admin:
         if item2:
             for key, item in data.items():
@@ -103,7 +102,8 @@ def update_item_admin(id, data, owner_id):
         else:
             return {'status' : 'item not found'}, 404
     else:
-        response = {'status' : 'Error: Not an Admin'}
+        return {'status' : 'Error: Not an Admin'}
+        
 
 
 def save_changes(data):
