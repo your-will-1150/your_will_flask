@@ -79,10 +79,34 @@ class Item(Resource):
     
     @api.doc('delete item by id')
     @Authenticate
-    def delete(self, item_id, owner_id):
-        if item.owner_id == user[id]:
+    def delete(self, item_id):
+        if item['owner_id'] == g.user.get('user_id'):
             return item_service.delete_item(int(item_id))
         else:
-            'nuh uh'
+            return 'Not your item to delete'
+
+
+@api.route('/admin/<item_id>')
+@api.param('item_id', "item's unique ID")
+@api.response(404, 'item not found')
+@api.response(401, 'owner_id mismatch')
+class Admin_func(Resource):
+    def delete(self, item_id):
+        data = request.json
+        return item_service.delete_item_admin(item_id, data['id'])
+
+    @api.doc('admin update item')
+    @api.expect(item_update, validate=True)
+    @api.marshal_with(item_update)
+    @Authenticate
+    def put(self, item_id):
+        data = request.json
+        print(data, 'test')
+        item = item_service.get_item_by_id(item_id)
+        if not item:
+            api.abort(404)
+        return item_service.update_item_admin(item_id, data)
+
+
        
     

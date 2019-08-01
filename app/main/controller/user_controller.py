@@ -18,19 +18,6 @@ user_me = UserMe.user
 parser = api.parser()
 parser.add_argument('Authorization', location='headers')
 
-
-# @api.route('/')
-# class UserCreate(Resource):
-#     @api.response(201, 'User successfully created')
-#     @api.doc('create new user')
-#     @api.response(409, 'User already exists. Please Log in')
-#     @api.expect(user, validate=True)
-#     def post(self):
-#         '''Creates a new User'''
-#         data = request.json
-#         return user_service.save_new_user(data=data)
-
-
 @api.route('/all')
 @api.response(200, 'Success')
 class UserList(Resource):
@@ -41,29 +28,6 @@ class UserList(Resource):
     def post(self):
         data = request.json
         return user_service.create_user(data=data)
-
-# @api.route('/<public_id>')
-# class User(Resource):
-
-#     @api.response(404, 'user not found')
-#     @api.doc('get a user')
-#     @api.marshal_with(user_detail)
-#     def get(self, id):
-#         '''Admin user lookup'''
-#         return user_service.get_a_user(id)
-
-
-# # @api.route('/test')
-# # class Test(Resource):
-
-# #     @api.expect(parser)
-# #     @token_required
-# #     def get(self):
-# #         re = {
-# #             'status': 'How did you get here',
-# #             'message': 'LEAVE'
-#         }
-
 
 @api.route('/me')
 @api.response(401, 'unauthorized')
@@ -90,25 +54,9 @@ class UserMe(Resource):
     @Authenticate
     def delete(self):
         user_id = g.user.get('owner_id')
+        print(user_id)
         return user_service.delete_user(user_id)
 
-
-
-#admin routes
-@api.route('/<user_id>')
-class Admin_Delete(Resource):
-    @api.doc('delete by user id')
-    @Authenticate
-    def delete(self, user_id):
-        return user_service.delete_user(int(user_id))
-    
-@api.route('/all_users')    
-class GetAllUsers(Resource):
-    def get(self):
-        users = user_service.get_all_users()
-        if len(users) == 0:
-            return {'status' : 'no items found'}, 404
-        return marshal(users, user)
 
 
 

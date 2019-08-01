@@ -15,7 +15,7 @@ class AuthDto:
     api = Namespace('auth', description='authentication related operations')
     user_auth = api.model('auth_details', {
         'email': fields.String(required=True, description='The email address'),
-        'password': fields.String(required=True, description='The user password')
+        'password': fields.String(default=False, required=False, description='The user password')
     })
 
 class UserDetailDto:
@@ -34,12 +34,16 @@ class UserCreateDto:
         'password' : fields.String(required=True, description='user password'),
         'confirm_password' : fields.String(required=True, 
         description='users confirmation of password'),
+        'admin' : fields.Boolean(default=False, required=False)
     })
 
 class UserUpdateDto:
     user = UserDto.api.model('user_updated', {
         'email' : fields.String(required=True, description='user email address'),
         'username' : fields.String(required=True, description='user username'),
+        'password' : fields.String(required=True, description='user password'),
+        'confirm_password' : fields.String(required=True, 
+        description='users confirmation of password')
     })
 
 class UserMe:
@@ -117,7 +121,8 @@ class ReviewDto:
         'title' : fields.String(required=True, description='title'),
         'content' : fields.String(required=True, description='content of review'),
         'rating' : fields.Integer(required=True, description='1 - 5 rating'),
-        'created_at' : fields.DateTime(description='when the review was created'),   
+        'created_at' : fields.DateTime(description='when the review was created'), 
+        'username' : fields.String(required=True, description='username of who created review')  
     })
 
 class ReviewDetailDto:
@@ -128,7 +133,8 @@ class ReviewDetailDto:
         'content' : fields.String(required=True, description='content of review'),
         'rating' : fields.Integer(required=True, description='1 - 5 rating'),
         'created_at' : fields.DateTime(description='when the review was created'),
-        'modified_at' : fields.DateTime(description='last revision of the note')
+        'modified_at' : fields.DateTime(description='last revision of the note'),
+        'username' : fields.String(required=True, description='username of who created review')
     })
 
 class ReviewCreateDto:
