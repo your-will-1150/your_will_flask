@@ -72,7 +72,6 @@ class ItemSpecificCat:
         'title' : fields.String(required=True, description='title of item'),
         'content' : fields.String(required=True, description='content of item'),
         'price' : fields.Float(required=True, description='price of item'),
-        'listed' : fields.Boolean(required=True, description='do you want this item listed?'),
 	    'gender' : fields.String(required=True, descriptio='gender'),
 	    'category' : fields.String(required=True, description='top or bottom')
     })
@@ -84,7 +83,6 @@ class ItemDetailDto:
         'title' : fields.String(required=True, description='title'),
         'content' : fields.String(required=True, description='content of item'),
         'price' : fields.Float(required=True, description='price of item'),
-        'listed' : fields.Boolean(required=True, description='status of listing'),
         'gender' : fields.String(required=True, description='gender'),
 	'category' : fields.String(required=True, description='top or bottom'),	
 	'owner_id' : fields.String(required=True, description='id of owner'),
@@ -98,7 +96,6 @@ class ItemCreateDto:
         'title' : fields.String(required=True, description='title of item'),
         'content' : fields.String(required=True, description='content of item'),
         'price' : fields.Float(required=True, description='price of item'),
-        'listed' : fields.Boolean(required=True, description='do you want this item listed?'),
 	    'gender' : fields.String(required=True, descriptio='gender'),
 	    'category' : fields.String(required=True, description='top or bottom')
     })
@@ -109,9 +106,8 @@ class ItemUpdateDto:
         'title' : fields.String(required=True, description='title of item'),
         'content' : fields.String(required=True, description='content of note'),
         'price' : fields.Float(required=True, description='price of item'),
-        'listed' : fields.Boolean(required=True, description='status of listing'),
-	'gender' : fields.String(required=True, description='gender'),
-	'category' : fields.String(required=True, description='top or bottom')
+        'gender' : fields.String(required=True, description='gender'),
+        'category' : fields.String(required=True, description='top or bottom')
     })
 
 class ReviewDto:

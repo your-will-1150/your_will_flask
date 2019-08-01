@@ -15,7 +15,6 @@ class Item(db.Model):
     price = db.Column(db.Float, nullable=False)
     gender = db.Column(db.String(128), nullable=False)
     category = db.Column(db.String(128), nullable=False) 
-    listed = db.Column(db.Boolean, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     modified_at = db.Column(db.DateTime, nullable=False)
 

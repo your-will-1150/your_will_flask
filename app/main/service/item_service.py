@@ -16,7 +16,6 @@ def create_item(data):
         title=data['title'],
         content=data['content'],
         price=data['price'],
-        listed=data['listed'],
         gender=data['gender'],
         category=data['category'],
         created_at=datetime.utcnow(),
