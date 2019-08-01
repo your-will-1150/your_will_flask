@@ -93,7 +93,6 @@ class Item(Resource):
 class Admin_func(Resource):
     def delete(self, item_id):
         data = request.json
-        print(data)
         return item_service.delete_item_admin(item_id, data['id'])
 
     @api.doc('admin update item')
@@ -102,10 +101,11 @@ class Admin_func(Resource):
     @Authenticate
     def put(self, item_id):
         data = request.json
+        print(data, 'test')
         item = item_service.get_item_by_id(item_id)
         if not item:
             api.abort(404)
-        return item_service.update_item_admin(item_id, data, data['owner_id'])
+        return item_service.update_item_admin(item_id, data)
 
 
        
