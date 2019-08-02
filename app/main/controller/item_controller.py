@@ -57,7 +57,6 @@ class ItemList(Resource):
 class Item(Resource):
     @api.doc('get item by ID')
     @api.marshal_with(item_detail)
-    @Authenticate
     def get(self, item_id):
         data = request.json
         return item_service.get_item_by_id(item_id)
