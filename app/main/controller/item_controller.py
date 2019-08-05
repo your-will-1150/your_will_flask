@@ -79,9 +79,13 @@ class Item(Resource):
     @api.doc('delete item by id')
     @Authenticate
     def delete(self, item_id):
-        if item['owner_id'] == g.user.get('user_id'):
+        item = item_service.get_item_by_id(int(item_id))
+        print(g.user.get('owner_id'))
+        if item.owner_id == g.user.get('owner_id'):
+            print('I am a teapot')
             return item_service.delete_item(int(item_id))
         else:
+            print('wrong user logged in')
             return 'Not your item to delete'
 
 
