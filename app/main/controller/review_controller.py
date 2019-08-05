@@ -29,6 +29,7 @@ class ReviewList(Resource):
     
     @api.response(201, 'Review Created')
     @api.doc('create new review')
+    @api.expect(review_create, validate=True)
     @Authenticate
     @api.expect(parser)
     def post(self):
@@ -76,11 +77,11 @@ class Review(Resource):
 class AdminFunc(Resource):
     def delete(self, review_id):
         data = request.json
-        return review_service.admin_delete_review(review_id, data['owner_id'])
+        return review_service.admin_delete_review(review_id, data)
 
     def put(self, review_id):
         data = request.json
         review = review_service.get_review_by_id(review_id)
         if not review:
             api.abort(404)
-        return review_service.admin_update_review(review_id, data, data['owner_id'])
+        return review_service.admin_update_review(review_id, data)
