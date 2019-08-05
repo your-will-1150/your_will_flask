@@ -62,8 +62,8 @@ class ItemDto:
         'title' : fields.String(required=True, description='title'),
         'owner_id' : fields.String(required=True, description='id of owner'),
         'created_at' : fields.DateTime(required=True, description='when item was created'),
-	'gender' : fields.String(required=True, description='gender of clothing'),
-	'category' : fields.String(required=True, description='top or bottom')
+        'gender' : fields.String(required=True, description='gender of clothing'),
+        'category' : fields.String(required=True, description='top or bottom')
     })
 
 class ItemSpecificCat:
@@ -84,8 +84,8 @@ class ItemDetailDto:
         'content' : fields.String(required=True, description='content of item'),
         'price' : fields.Float(required=True, description='price of item'),
         'gender' : fields.String(required=True, description='gender'),
-	'category' : fields.String(required=True, description='top or bottom'),	
-	'owner_id' : fields.String(required=True, description='id of owner'),
+        'category' : fields.String(required=True, description='top or bottom'),	
+        'owner_id' : fields.String(required=True, description='id of owner'),
         'created_at' : fields.DateTime(description='when the item was created'),
         'modified_at' : fields.DateTime(description='last revision of item')
     })
