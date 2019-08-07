@@ -16,11 +16,11 @@ def Authenticate(f):
         
 
         token = data.get('data')
-
         if not token:
             return data, status
         
         g.user = {'owner_id' : data['data']['user_id']}
+        print(g.user)
         return f(*args, **kwargs)
 
     return decorated
